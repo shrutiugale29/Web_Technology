@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Calendar</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .calendar {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .calendar-month {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .calendar-controls button {
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .calendar-table th, .calendar-table td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+    .calendar-table th {
+        background-color: #eee;
+    }
+    .current-day {
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+    }
+</style>
+</head>
+<body>
+
+<div class="calendar" id="calendar">
+    <div class="calendar-header">
+        <button onclick="prevMonth()">&lt;</button>
+        <div class="calendar-month" id="month"></div>
+        <button onclick="nextMonth()">&gt;</button>
+    </div>
+    <table class="calendar-table">
+        <thead>
+            <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const calendarBody = document.getElementById('calendar-body');
+    const monthDisplay = document.getElementById('month');
+    let currentDate = new Date();
+
+    function generateCalendar(year, month) {
+        calendarBody.innerHTML = '';
+        monthDisplay.textContent = `${getMonthName(month)} ${year}`;
+
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const daysInMonth = lastDayOfMonth.getDate();
+        const firstDayOfWeek = firstDayOfMonth.getDay();
+
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement('tr');
+
+            for (let j = 0; j < 7; j++) {
+                let cell = document.createElement('td');
+                if (i === 0 && j < firstDayOfWeek) {
+                    cell.textContent = '';
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    cell.textContent = date;
+                    if (date === currentDate.getDate() && year === currentDate.getFullYear() && month === currentDate.getMonth()) {
+                        cell.classList.add('current-day');
+                    }
+                    date++;
+                }
+                row.appendChild(cell);
+            }
+            calendarBody.appendChild(row);
+        }
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    }
+
+    function getMonthName(month) {
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+        return monthNames[month];
+    }
+
+    generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+</script>
+
+</body>
+</html>

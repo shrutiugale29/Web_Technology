@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Case Convertor</title>
+    </head>
+    <body>
+        <h2>Case Convertor</h2>
+
+        <label for="inputString">Enter a String:</label>
+        <input type="text" id="inputString"><br><br>
+        <button onclick="convertAndDisplay()">Convert</button>
+
+        <p id="output"></p>
+
+        <script>
+            function convertCase(str){
+                var result="";
+                for(var i=0;i<str.length;i++){
+                    var char=str.charAt(i);
+                    if(char==char.toUpperCase()){
+                        result+=char.toLowerCase();
+                    }
+                    else{
+                        result+=char.toUpperCase();
+                    }
+                }
+                return result;
+            }
+
+            function convertAndDisplay(){
+                var inputString = document.getElementById("inputString").value;
+                var covertedString = convertCase(inputString);
+                document.getElementById("output").innerText = covertedString;
+            }
+        </script>
+    </body>
+</html>
